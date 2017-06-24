@@ -1,0 +1,54 @@
+---
+title: "My Map"
+author: "Henry"
+date: "June 24, 2017"
+output: html_document
+---
+
+# Possible locations for retirement when I win the lottery
+## Circles show ten mile radius from Friendly Toast locations 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+```{r library, message=FALSE}
+library(leaflet)
+library(dplyr)
+locations = data.frame(
+ lat= c(43.076334,42.366261, 42.348479),
+ lng= c(-70.759933, -71.090572, -71.073129),
+ area= c("Friendly Toast in Portsmouth, NH", 
+         "Friendly Toast in Cambridge, MA", 
+         "Friendly Toast in Backbay, MA")
+)
+
+```
+
+Generate map.
+
+```{r plot_map}
+icons <- awesomeIcons(
+  icon = 'hand-spock-o',
+  iconColor = 'black',
+  library = 'fa',markerColor = "white"
+)
+
+
+m<-leaflet(data = locations) %>% addTiles() %>%
+  addAwesomeMarkers(~lng, ~lat, popup = ~as.character(area), 
+    label ="Live long and prosper",icon = icons ) %>%
+  addCircles(lng = ~lng, lat = ~lat, weight = 1,
+    radius = (10/.6)*1000) #10 miles converted to km, then meters
+  
+m
+
+
+```
+
+
+
+
+
